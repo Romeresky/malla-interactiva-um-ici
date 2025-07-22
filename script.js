@@ -1,46 +1,156 @@
-const subjects = [
-  { id: "algebra", name: "Álgebra", semester: 1 },
-  { id: "estadistica", name: "Estadística", semester: 2 },
-  { id: "infer", name: "Inferencia", semester: 3 },
-  { id: "calculo", name: "Cálculo", semester: 1 },
-  { id: "calculo_int", name: "Cálculo integral", semester: 2, prereq: ["calculo"] },
-  { id: "calculo_mult", name: "Cálculo multivariable", semester: 3, prereq: ["calculo_int"] },
-  { id: "ecuaciones", name: "Ecuaciones diferenciales", semester: 4, prereq: ["calculo_int"] },
-  { id: "analisis", name: "Análisis numérico", semester: 5, prereq: ["ecuaciones"] },
-  { id: "econometria", name: "Econometría", semester: 6, prereq: ["estadistica", "analisis"] },
-  { id: "micro", name: "Microeconomía", semester: 4 },
-  { id: "macro", name: "Macroeconomía", semester: 5, prereq: ["micro"] },
-  { id: "gestion_estrategica", name: "Gestión estratégica", semester: 7 },
-];
-
-const container = document.getElementById("malla-container");
-
-function renderSubjects() {
-  container.innerHTML = "";
-  for (let sem = 1; sem <= 11; sem++) {
-    const semSubjects = subjects.filter(s => s.semester === sem);
-    semSubjects.forEach(subj => {
-      const div = document.createElement("div");
-      div.className = "subject";
-      div.dataset.id = subj.id;
-      div.innerText = subj.name;
-
-      if (subj.prereq && !subj.prereq.every(id => subjects.find(s => s.id === id)?.completed)) {
-        div.classList.add("locked");
-      } else if (subj.completed) {
-        div.classList.add("completed");
-      }
-
-      div.addEventListener("click", () => toggleComplete(subj.id));
-      container.appendChild(div);
-    });
+const asignaturas = [
+  {
+    "id": "quimica",
+    "nombre": "Química aplicada a la ingeniería",
+    "semestre": 1,
+    "linea": "cs"
+  },
+  {
+    "id": "algebra",
+    "nombre": "Álgebra",
+    "semestre": 1,
+    "linea": "cs"
+  },
+  {
+    "id": "calculo",
+    "nombre": "Cálculo",
+    "semestre": 1,
+    "linea": "cs"
+  },
+  {
+    "id": "pensamiento",
+    "nombre": "Pensamiento computacional",
+    "semestre": 1,
+    "linea": "data"
+  },
+  {
+    "id": "estadistica",
+    "nombre": "Estadística",
+    "semestre": 2,
+    "linea": "cs"
+  },
+  {
+    "id": "calculo_int",
+    "nombre": "Cálculo integral",
+    "semestre": 2,
+    "linea": "cs",
+    "prereq": ["calculo"]
+  },
+  {
+    "id": "fisica",
+    "nombre": "Física",
+    "semestre": 2,
+    "linea": "cs"
+  },
+  {
+    "id": "intro_adm",
+    "nombre": "Introducción a la administración de proyectos",
+    "semestre": 2,
+    "linea": "proyectos"
+  },
+  {
+    "id": "inferencia",
+    "nombre": "Inferencia",
+    "semestre": 3,
+    "linea": "cs",
+    "prereq": ["estadistica"]
+  },
+  {
+    "id": "algebra_lineal",
+    "nombre": "Álgebra lineal",
+    "semestre": 3,
+    "linea": "cs",
+    "prereq": ["algebra"]
+  },
+  {
+    "id": "ecuaciones",
+    "nombre": "Ecuaciones diferenciales",
+    "semestre": 3,
+    "linea": "cs",
+    "prereq": ["calculo_int"]
+  },
+  {
+    "id": "prog_datos",
+    "nombre": "Programación aplicada en análisis de datos",
+    "semestre": 3,
+    "linea": "data",
+    "prereq": ["pensamiento"]
+  },
+  {
+    "id": "calculo_mult",
+    "nombre": "Cálculo multivariable",
+    "semestre": 4,
+    "linea": "cs",
+    "prereq": ["calculo_int"]
+  },
+  {
+    "id": "mecanica",
+    "nombre": "Mecánica",
+    "semestre": 4,
+    "linea": "cs",
+    "prereq": ["fisica"]
+  },
+  {
+    "id": "modelos_negocio",
+    "nombre": "Modelos de negocios",
+    "semestre": 4,
+    "linea": "gestion"
+  },
+  {
+    "id": "marketing",
+    "nombre": "Marketing estratégico",
+    "semestre": 4,
+    "linea": "gestion"
+  },
+  {
+    "id": "resistencia",
+    "nombre": "Resistencia y ciencia de los materiales",
+    "semestre": 5,
+    "linea": "cs",
+    "prereq": ["mecanica"]
+  },
+  {
+    "id": "analisis_numerico",
+    "nombre": "Análisis numérico",
+    "semestre": 5,
+    "linea": "cs",
+    "prereq": ["ecuaciones"]
+  },
+  {
+    "id": "procesos",
+    "nombre": "Simulación de procesos",
+    "semestre": 5,
+    "linea": "operaciones"
+  },
+  {
+    "id": "contabilidad",
+    "nombre": "Contabilidad y control de gestión",
+    "semestre": 5,
+    "linea": "gestion"
+  },
+  {
+    "id": "econometria",
+    "nombre": "Econometría",
+    "semestre": 6,
+    "linea": "economia",
+    "prereq": ["inferencia", "analisis_numerico"]
+  },
+  {
+    "id": "macro",
+    "nombre": "Macroeconomía",
+    "semestre": 6,
+    "linea": "economia"
+  },
+  {
+    "id": "iot",
+    "nombre": "Programación aplicada en microcontroladores",
+    "semestre": 6,
+    "linea": "data"
+  },
+  {
+    "id": "gestion_estrategica",
+    "nombre": "Gestión estratégica",
+    "semestre": 6,
+    "linea": "gestion"
   }
-}
-
-function toggleComplete(id) {
-  const subj = subjects.find(s => s.id === id);
-  subj.completed = !subj.completed;
-  renderSubjects();
-}
-
-renderSubjects();
+];
