@@ -154,3 +154,38 @@ const asignaturas = [
     "linea": "gestion"
   }
 ];
+
+function renderMalla() {
+  const mallaDiv = document.getElementById('malla');
+  const semestres = {};
+
+  // Agrupar asignaturas por semestre
+  asignaturas.forEach(asig => {
+    if (!semestres[asig.semestre]) {
+      semestres[asig.semestre] = [];
+    }
+    semestres[asig.semestre].push(asig);
+  });
+
+  // Crear contenedores por semestre
+  Object.keys(semestres).forEach(sem => {
+    const semestreDiv = document.createElement('div');
+    semestreDiv.className = 'semestre';
+    semestreDiv.innerHTML = `<h3>Semestre ${sem}</h3>`;
+
+    semestres[sem].forEach(asig => {
+      const asigDiv = document.createElement('div');
+      asigDiv.className = `asignatura ${asig.linea}`;
+      asigDiv.innerHTML = `
+        ${asig.nombre}
+        <div class="tooltip">Prerrequisitos: ${asig.prereq ? asig.prereq.join(', ') : 'Ninguno'}</div>
+      `;
+      semestreDiv.appendChild(asigDiv);
+    });
+
+    mallaDiv.appendChild(semestreDiv);
+  });
+}
+
+// Ejecutar al cargar la página
+document.addEventListener('DOMContentLoaded', renderMalla);
