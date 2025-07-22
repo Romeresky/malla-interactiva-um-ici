@@ -1,0 +1,36 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background-color: #f3f3f3;
+}
+
+h1 {
+  text-align: center;
+}
+
+#malla-container {
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.subject {
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  transition: 0.3s;
+}
+
+.subject.locked {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.subject.completed {
+  background-color: #86e49d;
+  border-color: #4caf50;
+}
