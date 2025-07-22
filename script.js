@@ -153,7 +153,14 @@ const asignaturas = [
     "semestre": 6,
     "linea": "gestion"
   }
+  {
+  "id": "microeconomia",
+  "nombre": "Microeconomía",
+  "semestre": 5,
+  "linea": "economia"
+  }
 ];
+
 
 function renderMalla() {
   const mallaDiv = document.getElementById('malla');
